@@ -4,8 +4,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <style>
 canvas {
-    border:1px solid #d3d3d3;
-    background-color: #f1f1f1;
+    border:10px solid black;
+    background-color: green;
+}
+
+body {
+    font-family: Times New Roman, sans-serif;
 }
 </style>
 </head>
@@ -15,15 +19,15 @@ canvas {
 var myGamePiece;
 
 function startGame() {
-    myGamePiece = new component(30, 30, "red", 225, 225);
+    myGamePiece = new component(30, 30, "blue", 225, 225);
     myGameArea.start();
 }
 
 var myGameArea = {
     canvas : document.createElement("canvas"),
     start : function() {
-        this.canvas.width = 480;
-        this.canvas.height = 270;
+        this.canvas.width = 800;
+        this.canvas.height = 500;
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.frameNo = 0;
@@ -65,7 +69,7 @@ function component(width, height, color, x, y, type) {
         ctx.restore();
     }
     this.newPos = function() {
-        this.angle += this.moveAngle * Math.PI / 180;
+        this.angle += this.moveAngle * Math.PI / 200;
         this.x += this.speed * Math.sin(this.angle);
         this.y -= this.speed * Math.cos(this.angle);
     }
@@ -75,16 +79,16 @@ function updateGameArea() {
     myGameArea.clear();
     myGamePiece.moveAngle = 0;
     myGamePiece.speed = 0;
-    if (myGameArea.keys && myGameArea.keys[37]) {myGamePiece.moveAngle = -1; }
-    if (myGameArea.keys && myGameArea.keys[39]) {myGamePiece.moveAngle = 1; }
-    if (myGameArea.keys && myGameArea.keys[38]) {myGamePiece.speed= 1; }
-    if (myGameArea.keys && myGameArea.keys[40]) {myGamePiece.speed= -1; }
+    if (myGameArea.keys && myGameArea.keys[65]) {myGamePiece.moveAngle = -3; }
+    if (myGameArea.keys && myGameArea.keys[68]) {myGamePiece.moveAngle = 3; }
+    if (myGameArea.keys && myGameArea.keys[87]) {myGamePiece.speed= 3; }
+    if (myGameArea.keys && myGameArea.keys[83]) {myGamePiece.speed= -3; }
     myGamePiece.newPos();
     myGamePiece.update();
 }
 </script>
 
-<p>Make sure the gamearea has focus, and use the arrow keys to move the red square around.</p>
+<p>Make sure the game area has focus, and use the WASD keys to move the blue square around.</p>
 
 </body>
 </html>
