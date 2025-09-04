@@ -4,8 +4,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <style>
 canvas {
-    border:1px solid #d3d3d3;
-    background-color: #f223;
+    border:5px solid navy;
+    background-color: pink;
+}
+
+body {
+    font-family: Comic Sans MS, sans-serif;
 }
 </style>
 </head>
@@ -17,8 +21,8 @@ var myObstacles = [];
 var myScore;
 
 function startGame() {
-    myGamePiece = new component(30, 30, "blue", 10, 120);
-    myGamePiece.gravity = 0.05;
+    myGamePiece = new component(30, 30, "darkblue", 10, 120);
+    myGamePiece.gravity = 0.3;
     myScore = new component("30px", "Comic Sans MS", "black", 280, 40, "text");
     myGameArea.start();
 }
@@ -147,7 +151,7 @@ function restartGame() {
 }
 </script>
 <br>
-<button onmousedown="accelerate(-0.2)" onmouseup="accelerate(0.05)">Accelerate</button>
+<button onmousedown="accelerate(-0.5)" onmouseup="accelerate(0.2)">Accelerate</button>
 <button onclick="restartGame()">Restart</button>
 <p>Click the Accelerate button to begin the game. Keep pressing Accelerate to move upward and avoid obstacles. Stop clicking to move downward.</p>
 <p> If you crash, the Restart
