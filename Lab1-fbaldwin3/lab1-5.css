@@ -1,27 +1,17 @@
 body {
-
    background: cornflowerblue;
-
 }
-
-
 
 #snailbait-arena {
-
    margin: 0 auto;
-
    margin-top: 50px;
-
    width: 800px;
-
    height: 400px;
-
 }
 
-
-
 #snailbait-game-canvas {
-
    border: 1.5px solid blue;
+   width: 800px;
+   height: 400px;
 
 }
