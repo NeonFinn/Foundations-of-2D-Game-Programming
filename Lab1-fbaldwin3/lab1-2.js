@@ -21,15 +21,17 @@ function startGame() {
 
 function draw() {
    drawBackground();
-   drawRunner();
+   drawRunner(550, 130);
+   drawRunner(50, 280)
+   drawRunner(250, 45);
 }
 
 function drawBackground() {
    context.drawImage(background, 0, 0);
 }
 
-function drawRunner() {
-   context.drawImage(runnerImage, 550, 130);
+function drawRunner(x, y) {
+   context.drawImage(runnerImage, x, y);
 }
 
 // Launch game.........................................................

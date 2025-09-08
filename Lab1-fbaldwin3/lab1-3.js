@@ -20,12 +20,14 @@ function startGame() {
 }
 
 function draw() {
-   drawBackground();
+   drawBackground(0, 0);
+   drawBackground(43, 54);
+   drawBackground(-100, 150);
    drawRunner();
 }
 
-function drawBackground() {
-   context.drawImage(background, 100, -231);
+function drawBackground(x, y) {
+   context.drawImage(background, x, y);
 }
 
 function drawRunner() {

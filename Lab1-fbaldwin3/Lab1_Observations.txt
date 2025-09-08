@@ -1,0 +1,15 @@
+1. Changing the background image only requires changing the URL in the JavaScript file. The rest remains the same.
+
+2. To draw the runner at different locations, you first have to remove the hardcoded values for x and y in the drawRunner function.
+Then, you can pass in different x and y values when calling the function to position the runner at different locations on the canvas.
+
+3. Drawing the background at different locations is similar to drawing the runner. You can modify the drawBackground function to accept x and y parameters,
+and then call it with different values to position the background image to your liking. This isn't the most practical for a background image though, as it
+causes overlap and clipping.
+
+4. To draw the runner and then the background all you have to do is switch the position of the function calls. This causes the background to now be drawn
+over top of the runner which covers it up on the canvas. The runner is still there but now is not visible.
+
+5. Removing the width and height attributes from the HTML file and adding it to the CSS file is pretty straightforward. However, the changed code does not
+output the same result as before. This is because the canvas's resolution is still technically 300 x 150, but it is being stretched to 800 x 400 by the CSS.
+Instead of the actual canvas size being changed we are stretching the image. As a result, it looks blurry or distorted since the pixels are scaled up.
