@@ -1,301 +1,334 @@
 var canvas = document.getElementById('snailbait-game-canvas'),
     context = canvas.getContext('2d'),
-
-    PLATFORM_HEIGHT = 8,
-    PLATFORM_STROKE_WIDTH = 2,
-    PLATFORM_STROKE_STYLE = '#000000',
-
-    STARTING_RUNNER_LEFT = 50,
-    STARTING_RUNNER_TRACK = 1,
-
-    TRACK_1_BASELINE = 323,
-    TRACK_2_BASELINE = 223,
-    TRACK_3_BASELINE = 123,
-
-    STARTING_BACKGROUND_VELOCITY = .05,
-    STARTING_BACKGROUND_OFFSET = 0.05,
-
-    background = new Image(),
-    runner = new Image(),
-
-    lastAnimationFrameTime = 0,
-    lastFpsUpdateTime = 0,
-    fps = 60,
-
     fpsElement = document.getElementById('fps'),
 
-    runnerTrack = STARTING_RUNNER_TRACK,
+   // Constants.........................................................
 
-    backgroundOffset = STARTING_BACKGROUND_OFFSET,
+   LEFT = 1,
+   RIGHT = 2,
 
-    bgVelocity = STARTING_BACKGROUND_VELOCITY,
+   BACKGROUND_VELOCITY = 25,
 
-    platformData = [
-       // screen 1
-       {
-          left: 10,
-          width: 230,
-          height: PLATFORM_HEIGHT,
-          fillStyle: 'rgb(250,250,0)',
-          opacity: 1,
-          track: 1,
-          pulsate: false,
-       },
+   PLATFORM_HEIGHT = 8,
+   PLATFORM_STROKE_WIDTH = 2,
+   PLATFORM_STROKE_STYLE = 'rgb(0,0,0)',
 
-       {
-           left: 250,
-           width: 100,
-           height: PLATFORM_HEIGHT,
-           fillStyle: 'rgb(150,190,225)',
-           opacity: 1,
-           track: 2,
-           pulsate: false,
-       },
+   RUNNER_LEFT = 50,
+   STARTING_RUNNER_TRACK = 1,
 
-       {
-           left: 400,
-           width: 125,
-           height: PLATFORM_HEIGHT,
-           fillStyle: 'rgb(250,0,0)',
-           opacity: 1,
-           track: 3,
-           pulsate: false,
-       },
+   // Track baselines...................................................
 
-       {
-           left: 633,
-           width: 100,
-           height: PLATFORM_HEIGHT,
-           fillStyle: 'rgb(250,250,0)',
-           opacity: 1,
-           track: 1,
-           pulsate: false,
-       },
+   TRACK_1_BASELINE = 323,
+   TRACK_2_BASELINE = 223,
+   TRACK_3_BASELINE = 123,
 
-       // screen 2
-       {
-            left: 810,
-            width: 100,
-            height: PLATFORM_HEIGHT,
-            fillStyle: 'rgb(200,200,0)',
-            opacity: 1,
-            track: 2,
-            pulsate: false,
-         },
+   // Platform scrolling offset (and therefore speed) is
+   // PLATFORM_VELOCITY_MULTIPLIER * backgroundOffset: The
+   // platforms move PLATFORM_VELOCITY_MULTIPLIER times as
+   // fast as the background.
 
-         {
-             left: 1025,
-             width: 125,
-             height: PLATFORM_HEIGHT,
-             fillStyle: 'rgb(80,140,230)',
-             opacity: 1,
-             track: 3,
-             pulsate: false,
-         },
+   PLATFORM_VELOCITY_MULTIPLIER = 4.35,
 
-         {
-             left: 1100,
-             width: 100,
-             height: PLATFORM_HEIGHT,
-             fillStyle: 'rgb(200,200,0)',
-             opacity: 1,
-             track: 1,
-             pulsate: false,
-         },
+   STARTING_BACKGROUND_VELOCITY = 0,
 
-         {
-             left: 1450,
-             width: 100,
-             height: PLATFORM_HEIGHT,
-             fillStyle: 'rgb(150,190,225)',
-             opacity: 1,
-             track: 2,
-             pulsate: false,
-       },
+   STARTING_PLATFORM_OFFSET = 0,
+   STARTING_BACKGROUND_OFFSET = 0,
 
-       // screen 3
-       {
-           left: 1700,
-           width: 125,
-           height: PLATFORM_HEIGHT,
-           fillStyle: 'rgb(250,0,0)',
-           opacity: 1,
-           track: 3,
-           pulsate: false,
-       },
+   // Images............................................................
 
-       {
-           left: 1933,
-           width: 100,
-           height: PLATFORM_HEIGHT,
-           fillStyle: 'rgb(250,250,0)',
-           opacity: 1,
-           track: 1,
-           pulsate: false,
-       },
+   background  = new Image(),
+   runnerImage = new Image(),
 
-       {
-           left: 2150,
-           width: 100,
-           height: PLATFORM_HEIGHT,
-           fillStyle: 'rgb(200,200,0)',
-           opacity: 1,
-           track: 2,
-           pulsate: false,
-       },
+   // Time..............................................................
 
-       {
-           left: 2375,
-           width: 125,
-           height: PLATFORM_HEIGHT,
-           fillStyle: 'rgb(80,140,230)',
-           opacity: 1,
-           track: 3,
-           pulsate: false,
-       },
+   lastAnimationFrameTime = 0,
+   lastFpsUpdateTime = 0,
+   fps = 60,
 
-       // screen 4
-       {
-           left: 2633,
-           width: 100,
-           height: PLATFORM_HEIGHT,
-           fillStyle: 'rgb(200,200,0)',
-           opacity: 1,
-           track: 1,
-           pulsate: false,
-       },
+   // Fps indicator.....................................................
 
-       {
-           left: 2850,
-           width: 100,
-           height: PLATFORM_HEIGHT,
-           fillStyle: 'rgb(150,190,225)',
-           opacity: 1,
-           track: 2,
-           pulsate: false,
-       },
+   fpsElement = document.getElementById('fps'),
 
-       {
-           left: 3075,
-           width: 125,
-           height: PLATFORM_HEIGHT,
-           fillStyle: 'rgb(250,0,0)',
-           opacity: 1,
-           track: 3,
-           pulsate: false,
-       },
+   // Runner track......................................................
 
-       {
-          left: 3308,
-          width: 100,
-          height: PLATFORM_HEIGHT,
-          fillStyle: 'rgb(250,250,0)',
-          opacity: 1,
-          track: 1,
-          pulsate: false,
-       },
-    ];
+   runnerTrack = STARTING_RUNNER_TRACK,
 
-    // launch game
+   // Translation offsets...............................................
 
-    initializeImages();
+   backgroundOffset = STARTING_BACKGROUND_OFFSET,
+   platformOffset = STARTING_PLATFORM_OFFSET,
 
-    function draw() {
-       setOffsets();
-       drawBackground();
-       drawPlatforms();
-       drawRunner();
-    }
+   // Velocities........................................................
 
-    function setOffsets() {
-       setBackgroundOffset();
-    }
+   bgVelocity = STARTING_BACKGROUND_VELOCITY,
+   platformVelocity,
 
-    function setBackgroundOffset() {
-       var offset = backgroundOffset + (bgVelocity / fps);
+   // Platforms.........................................................
 
-       if (offset > 0 && offset < background.width) {
-            backgroundOffset = offset;
-       }
-       else {
-          backgroundOffset = 0;
-       }
-    }
+   platformData = [
+      // Screen 1.......................................................
+      {
+         left:      10,
+         width:     230,
+         height:    PLATFORM_HEIGHT,
+         fillStyle: 'rgb(150,190,255)',
+         opacity:   1.0,
+         track:     1,
+         pulsate:   false,
+      },
 
-    function drawBackground() {
-       context.translate(-backgroundOffset, 0);
-       context.drawImage(background, 0, 0);
-       context.drawImage(background, background.width, 0);
-    }
+      {  left:      250,
+         width:     100,
+         height:    PLATFORM_HEIGHT,
+         fillStyle: 'rgb(150,190,255)',
+         opacity:   1.0,
+         track:     2,
+         pulsate:   false,
+      },
 
-    function drawRunner() {
-       context.drawImage(runner,
-          STARTING_RUNNER_LEFT,
-          calculatePlatformTop(STARTING_RUNNER_TRACK) - runner.height);
-    }
+      {  left:      400,
+         width:     125,
+         height:    PLATFORM_HEIGHT,
+         fillStyle: 'rgb(250,0,0)',
+         opacity:   1.0,
+         track:     3,
+         pulsate:   false
+      },
 
-    function drawPlatforms() {
-       var data,
-           platformTop,
-           index;
+      {  left:      633,
+         width:     100,
+         height:    PLATFORM_HEIGHT,
+         fillStyle: 'rgb(80,140,230)',
+         opacity:   1.0,
+         track:     1,
+         pulsate:   false,
+      },
 
-       context.save();
+      // Screen 2.......................................................
 
-       for (index = 0; index < platformData.length; ++index) {
-          data = platformData[index];
-          platformTop = calculatePlatformTop(data.track)
+      {  left:      810,
+         width:     100,
+         height:    PLATFORM_HEIGHT,
+         fillStyle: 'rgb(200,200,0)',
+         opacity:   1.0,
+         track:     2,
+         pulsate:   false
+      },
 
-          context.lineWidth = PLATFORM_STROKE_WIDTH;
-          context.strokeStyle = PLATFORM_STROKE_STYLE;
-          context.fillStyle = data.fillStyle;
-          context.globalAlpha = data.opacity;
+      {  left:      1025,
+         width:     100,
+         height:    PLATFORM_HEIGHT,
+         fillStyle: 'rgb(80,140,230)',
+         opacity:   1.0,
+         track:     2,
+         pulsate:   false
+      },
 
-          context.strokeRect(data.left, platformTop, data.width, data.height);
-          context.fillRect(data.left, platformTop, data.width, data.height);
-       }
+      {  left:      1200,
+         width:     125,
+         height:    PLATFORM_HEIGHT,
+         fillStyle: 'aqua',
+         opacity:   1.0,
+         track:     3,
+         pulsate:   false
+      },
 
-       context.restore();
-    }
+      {  left:      1400,
+         width:     180,
+         height:    PLATFORM_HEIGHT,
+         fillStyle: 'rgb(80,140,230)',
+         opacity:   1.0,
+         track:     1,
+         pulsate:   false,
+      },
 
-    function calculateFps(now) {
-       var fps = 1000 / (now - lastAnimationFrameTime);
-       lastAnimationFrameTime = now;
+      // Screen 3.......................................................
 
-       if (now - lastFpsUpdateTime > 1000) {
-          lastFpsUpdateTime = now;
-          fpsElement.innerHTML = fps.toFixed(1) + ' fps';
-       }
-       return fps;
-    }
+      {  left:      1625,
+         width:     100,
+         height:    PLATFORM_HEIGHT,
+         fillStyle: 'rgb(200,200,0)',
+         opacity:   1.0,
+         track:     2,
+         pulsate:   false
+      },
 
-    function calculatePlatformTop(track) {
-       var top;
+      {  left:      1800,
+         width:     250,
+         height:    PLATFORM_HEIGHT,
+         fillStyle: 'rgb(80,140,230)',
+         opacity:   1.0,
+         track:     1,
+         pulsate:   false
+      },
 
-       if (track === 1) {top = TRACK_1_BASELINE;}
-       else if (track === 2) {top = TRACK_2_BASELINE;}
-       else if (track === 3) {top = TRACK_3_BASELINE;}
+      {  left:      2000,
+         width:     100,
+         height:    PLATFORM_HEIGHT,
+         fillStyle: 'rgb(200,200,80)',
+         opacity:   1.0,
+         track:     2,
+         pulsate:   false
+      },
 
-       return top - PLATFORM_HEIGHT;
-    }
+      {  left:      2100,
+         width:     100,
+         height:    PLATFORM_HEIGHT,
+         fillStyle: 'aqua',
+         opacity:   1.0,
+         track:     3,
+      },
 
-    function animate(now) {
-       fps = calculateFps(now);
-       draw();
-       window.requestNextAnimationFrame(animate);
-    }
 
-    function initializeImages() {
-       background.src = 'images/background.png';
-       runner.src = 'images/runner.png';
+      // Screen 4.......................................................
 
-       background.onload = function(e) {
-          startGame();
-       };
-    }
+      {  left:      2269,
+         width:     200,
+         height:    PLATFORM_HEIGHT,
+         fillStyle: 'gold',
+         opacity:   1.0,
+         track:     1,
+      },
 
-    function startGame() {
-        window.requestNextAnimationFrame(animate);
-    }
+      {  left:      2500,
+         width:     200,
+         height:    PLATFORM_HEIGHT,
+         fillStyle: '#2b950a',
+         opacity:   1.0,
+         track:     2,
+         snail:     true
+      },
+   ];
+
+// Drawing..............................................................
+
+function draw(now) {
+   setPlatformVelocity();
+   setOffsets(now);
+
+   drawBackground();
+
+   drawRunner();
+   drawPlatforms();
+}
+
+function setPlatformVelocity() {
+   platformVelocity = bgVelocity * PLATFORM_VELOCITY_MULTIPLIER;
+}
+
+function setOffsets(now) {
+   setBackgroundOffset(now);
+   setPlatformOffset(now);
+}
+
+function setBackgroundOffset(now) {
+   backgroundOffset +=
+      bgVelocity * (now - lastAnimationFrameTime) / 1000;
+
+   if (backgroundOffset < 0 || backgroundOffset > background.width) {
+      backgroundOffset = 0;
+   }
+}
+
+function setPlatformOffset(now) {
+   platformOffset +=
+      platformVelocity * (now - lastAnimationFrameTime) / 1000;
+}
+
+function drawBackground() {
+   context.translate(-backgroundOffset, 0);
+
+   // Initially onscreen:
+   context.drawImage(background, 0, 0);
+
+   // Initially offscreen:
+   context.drawImage(background, background.width, 0);
+
+   context.translate(backgroundOffset, 0);
+}
+
+function drawRunner() {
+   context.drawImage(runnerImage,
+                     RUNNER_LEFT,
+                     calculatePlatformTop(runnerTrack) - runnerImage.height + 3);
+}
+
+function drawPlatform(data) {
+   var platformTop = calculatePlatformTop(data.track);
+
+   context.lineWidth = PLATFORM_STROKE_WIDTH;
+   context.strokeStyle = PLATFORM_STROKE_STYLE;
+   context.fillStyle = data.fillStyle;
+   context.globalAlpha = data.opacity;
+
+   context.strokeRect(data.left, platformTop, data.width, data.height);
+   context.fillRect  (data.left, platformTop, data.width, data.height);
+}
+
+function drawPlatforms() {
+   var index;
+
+   context.translate(-platformOffset, 0);
+
+   for (index = 0; index < platformData.length; ++index) {
+      drawPlatform(platformData[index]);
+   }
+
+   context.translate(platformOffset, 0);
+}
+
+function calculateFps(now) {
+   var fps = 1 / (now - lastAnimationFrameTime) * 1000;
+
+   if (now - lastFpsUpdateTime > 1000) {
+      lastFpsUpdateTime = now;
+      fpsElement.innerHTML = fps.toFixed(0) + ' fps';
+   }
+   return fps;
+}
+
+function calculatePlatformTop(track) {
+   if      (track === 1) { return TRACK_1_BASELINE; } // 323 pixels
+   else if (track === 2) { return TRACK_2_BASELINE; } // 223 pixels
+   else if (track === 3) { return TRACK_3_BASELINE; } // 123 pixels
+}
+
+function turnLeft() {
+   bgVelocity = -BACKGROUND_VELOCITY;
+}
+
+function turnRight() {
+   bgVelocity = BACKGROUND_VELOCITY;
+}
+
+// Animation............................................................
+
+function animate(now) {
+   fps = calculateFps(now);
+   draw(now);
+   lastAnimationFrameTime = now;
+   requestNextAnimationFrame(animate);
+}
+
+// ------------------------- INITIALIZATION ----------------------------
+
+function initializeImages() {
+   background.src = 'images/background.png';
+   runnerImage.src = 'images/runner.png';
+
+   background.onload = function (e) {
+      startGame();
+   };
+}
+
+function startGame() {
+   window.requestNextAnimationFrame(animate);
+}
+
+// Launch game.........................................................
 
 initializeImages();
 
+setTimeout( function (e) {
+   turnRight();
+}, 1000);
