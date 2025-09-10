@@ -311,7 +311,7 @@ function animate(now) {
 // ------------------------- INITIALIZATION ----------------------------
 
 function initializeImages() {
-   background.src = 'images/background.png';
+   background.src = 'images/bckgnd-3.3.png';
    runnerImage.src = 'images/runner.png';
 
    console.log("Loading background image");
