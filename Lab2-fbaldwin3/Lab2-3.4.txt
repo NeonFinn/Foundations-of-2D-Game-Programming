@@ -1,0 +1,3 @@
+I was able to slow down the frame rate a little bit. My computer is pretty strong so it took a lot of windows to achieve that result.
+The best way I found was to open a resource intensive game like Red Dead Redemption 2. That alone slowed the frame rate, but also adding
+some YouTube videos at max quality into the mix helped even further
