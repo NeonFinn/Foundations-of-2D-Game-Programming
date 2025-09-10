@@ -254,13 +254,24 @@ function drawRunner() {
 function drawPlatform(data) {
    var platformTop = calculatePlatformTop(data.track);
 
-   context.lineWidth = PLATFORM_STROKE_WIDTH;
+   context.save(); // Save state
+
+   context.lineWidth   = PLATFORM_STROKE_WIDTH;
    context.strokeStyle = PLATFORM_STROKE_STYLE;
-   context.fillStyle = data.fillStyle;
+   context.fillStyle   = data.fillStyle;
    context.globalAlpha = data.opacity;
 
+   // Shadows (only platforms)
+   context.shadowColor   = 'rgba(0,0,0,0.5)';
+   context.shadowOffsetX = 4;
+   context.shadowOffsetY = 4;
+   context.shadowBlur    = 6;
+
+   // Draw platform
    context.strokeRect(data.left, platformTop, data.width, data.height);
    context.fillRect  (data.left, platformTop, data.width, data.height);
+
+   context.restore(); // Restore state (runner unaffected)
 }
 
 function drawPlatforms() {
