@@ -222,8 +222,7 @@ function setOffsets(now) {
 }
 
 function setBackgroundOffset(now) {
-   backgroundOffset +=
-      bgVelocity * (now - lastAnimationFrameTime) / 1000;
+   backgroundOffset += bgVelocity * (now - lastAnimationFrameTime) / 1000;
 
    if (backgroundOffset < 0 || backgroundOffset > background.width) {
       backgroundOffset = 0;
@@ -231,8 +230,7 @@ function setBackgroundOffset(now) {
 }
 
 function setPlatformOffset(now) {
-   platformOffset +=
-      platformVelocity * (now - lastAnimationFrameTime) / 1000;
+   platformOffset += platformVelocity * (now - lastAnimationFrameTime) / 1000;
 }
 
 function drawBackground() {
@@ -316,13 +314,20 @@ function initializeImages() {
    background.src = 'images/background.png';
    runnerImage.src = 'images/runner.png';
 
+   console.log("Loading background image");
+   console.log("Loading runner image");
+
    background.onload = function (e) {
       startGame();
+
+        console.log("Background image loaded");
+        console.log("Runner image loaded");
    };
 }
 
 function startGame() {
    window.requestNextAnimationFrame(animate);
+   console.log("Game started");
 }
 
 // Launch game.........................................................
