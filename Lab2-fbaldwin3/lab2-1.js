@@ -1,5 +1,10 @@
 var canvas = document.getElementById('snailbait-game-canvas'),
-    context = canvas.getContext('2d');
+    context = canvas.getContext('2d'),
+    fpsElement = document.getElementById('fps'),
+
+    lastAnimationFrameTime = 0,
+    lastFpsUpdateTime = 0,
+    fps = 60,
 
     PLATFORM_HEIGHT = 8,
     PLATFORM_STROKE_WIDTH = 2,
@@ -41,7 +46,7 @@ var canvas = document.getElementById('snailbait-game-canvas'),
            width: 125,
            height: PLATFORM_HEIGHT,
            fillStyle: 'rgb(250,0,0)',
-           opacity: 0.5,
+           opacity: 0.75,
            track: 3,
            pulsate: false,
        },
@@ -71,11 +76,30 @@ var canvas = document.getElementById('snailbait-game-canvas'),
     }
 
     function startGame() {
+       window.requestNextAnimationFrame(animate);
+    }
+
+    function animate(now) {
+       fps = calculateFps(now);
        draw();
+       requestNextAnimationFrame(animate);
+    }
+
+    function calculateFps(now) {
+       var fps = 1000 / (now - lastAnimationFrameTime);
+       lastAnimationFrameTime = now;
+
+       if (now - lastFpsUpdateTime > 1000) {
+          lastFpsUpdateTime = now;
+          fpsElement.innerHTML = fps.toFixed(1) + ' fps';
+       }
+       return fps;
     }
 
     function draw() {
        drawBackground();
+       drawPlatforms();
+       drawRunner();
     }
 
     function drawBackground() {
@@ -108,9 +132,16 @@ var canvas = document.getElementById('snailbait-game-canvas'),
     function calculatePlatformTop(track) {
        var top;
 
-       if (track === 1) {top = TRACK_1_BASELINE;)
+       if (track === 1) {top = TRACK_1_BASELINE;}
        else if (track === 2) {top = TRACK_2_BASELINE;}
        else if (track === 3) {top = TRACK_3_BASELINE;}
 
        return top - PLATFORM_HEIGHT;
+    }
+
+    function drawRunner() {
+       context.drawImage(runner,
+          STARTING_RUNNER_LEFT,
+          calculatePlatformTop(STARTING_RUNNER_TRACK) - runner.height);
+
     }

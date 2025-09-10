@@ -1,39 +1,26 @@
 <!DOCTYPE html>
-
 <html>
-
    <head>
-
       <title>Snail Bait</title>
 
       <link rel='stylesheet' href='lab2-1.css'/>
-
       <link rel="icon' href='images/smile.png' type='image/jpg" />
-
    </head>
 
-
-
    <body>
-
       <div id='snailbait-arena'>
 
+         <div id="score">0</div>
+         <div id="fps"></div>
+
          <canvas id='snailbait-game-canvas' width='800' height='400'>
-
             Your browser does not support HTML5 Canvas.
-
          </canvas>
-
       </div>
-
-
 
       <!-- JavaScript................................................-->
 
-
-
+      <script src='requestNextAnimationFrame.js'></script>
       <script src='lab2-1.js'></script>
-
    </body>
-
 </html>
