@@ -1,28 +1,41 @@
 <!DOCTYPE html>
 <html>
+   <!-- Head.........................................................-->
 
 	<head>
 	   <title>Snail Bait</title>
-      <link rel='stylesheet' href='lab3-5.7.1.css'/>
+      <link rel='stylesheet' href='snailbait.css'/>
    </head>
 
+   <!-- Body.........................................................-->
+
    <body>
+      <!-- Arena.....................................................-->
 
       <div id='arena'>
+         <!-- Score and fps..........................................-->
 
          <div id='score'>0</div>
          <div id='fps'></div>
 
+         <!-- Toast..................................................-->
+
          <div id='toast'></div>
+
+         <!-- Loading screen........................................-->
 
          <div id='loading'>
             <div id='loading-title'>Loading...</div>
-            <img id='loading-animated-gif'/>
+            <img id='loading-animated-gif'/> <!-- no src attribute -->
          </div>
+            
+         <!-- The game canvas........................................-->
 
          <canvas id='game-canvas' width='800' height='400'>
             Your browser does not support HTML5 Canvas.
          </canvas>
+
+         <!-- Sound and music.....................................-->
 
          <div id='sound-and-music'>
             <div id='sound-checkbox-div' class='checkbox-div'>
@@ -33,6 +46,8 @@
                Music <input id='music-checkbox' type='checkbox' checked/>
             </div>
          </div>
+
+         <!-- Instructions........................................-->
 
          <div id='instructions'>
             <div class='keys'>
@@ -50,11 +65,18 @@
                p <div class='explanation'>pause</div>
             </div>
          </div>
+
+         <!-- Copyright...........................................-->
          
          <div id='copyright'> &copy; 2012 David Geary</div>
       </div>
 
-      <script src='requestNextAnimationFrame.js'></script>
-      <script src='lab3-5.7.1.js'></script>
+      <!-- JavaScript................................................-->
+
+      <script src='../js/requestNextAnimationFrame.js'></script>
+      <script src='../js/sprites.js'></script>
+      <script src='../js/behaviors/cycle.js'></script>
+      <script src='../js/stopwatch.js'></script>
+      <script src='snailbait.js'></script>
   </body>
 </html>
