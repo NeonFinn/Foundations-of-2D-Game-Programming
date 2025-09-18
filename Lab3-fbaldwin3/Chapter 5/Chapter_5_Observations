@@ -1,0 +1,12 @@
+1. Creating a gif was not too difficult. I found two images and then a online free gif maker. It would look better
+if I had drawn them myself because it doesn't exactly match up.
+
+2. Clearing my browsers cache did increase the loading screen time a little bit. I'm not sure if it is because my computer
+has a high processing power but I can see the gif for a second before the game loads.
+
+3. Adding the styling to the CSS instead of in methods achieves the same result but is more efficient because you can change
+the styling in one place instead of having to change it in multiple methods.
+
+4. Increasing the countdown only required you to change the numbers and add two more lines of the previous code with the
+correct numbers. This is not efficient because if you wanted to change the countdown to 20, you would have to add 15 more lines
+to achieve the same result.
