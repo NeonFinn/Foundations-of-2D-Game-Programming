@@ -355,10 +355,6 @@ SnailBait.prototype = {
    fadeInElements: function () {
       var args = arguments;
 
-      for (var i=0; i < args.length; ++i) {
-         args[i].style.display = 'block';
-      }
-
       setTimeout( function () {
          for (var i=0; i < args.length; ++i) {
             args[i].style.opacity = snailBait.OPAQUE;
