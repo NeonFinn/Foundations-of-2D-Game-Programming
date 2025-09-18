@@ -1,0 +1,11 @@
+1. When that line of code is commented out, the game still treats the time paused as run time. When resumed, the game will
+seemingly jump forward in time. When you uncomment that line the game once again calculates the adjustment and resumes exactly
+where the player left off.
+
+2. "snailBait" can be used inside the constructor instead of "this:. Using "this" is often times more explicit. Inside methods,
+you mostly use "this" to refer to the object itself. It helps keep the correct reference when functions are called from different
+places, especially in callbacks like setTimeout or onload.
+
+3. This question was quite confusing. But to my knowledge, in var self = this; using "this" captures the current instance of the class. Using "this"
+in the this.background.onload callback refers to the image and not snailBait. By using self.startGame instead it ensures you call
+it on the right object.
