@@ -589,8 +589,8 @@ var SnailBait = function () {
 
    this.smokingHoleData = [
       { left: 352,  top: this.TRACK_2_BASELINE - 22 },
-      { left: 534,  top: this.TRACK_3_BASELINE + 5 },
-      { left: 1245,  top: this.TRACK_2_BASELINE - 18 },
+      { left: 688,  top: this.TRACK_3_BASELINE + 5 },
+      { left: 1352,  top: this.TRACK_2_BASELINE - 18 },
    ];
    
    this.snailData = [
@@ -1164,7 +1164,7 @@ SnailBait.prototype = {
    },
 
    initializeImages: function () {
-      this.spritesheet.src = 'images/spritesheet.png';
+      this.spritesheet.src = 'images/spritesheet-1.png';
       this.runnerAnimatedGIFElement.src = 'images/snail.gif';
 
       this.spritesheet.onload = function (e) {

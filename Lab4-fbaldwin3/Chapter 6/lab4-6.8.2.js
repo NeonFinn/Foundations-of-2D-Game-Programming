@@ -49,6 +49,8 @@ var SnailBait = function () {
    //this.STARTING_PLATFORM_OFFSET = 0,
    this.STARTING_BACKGROUND_OFFSET = 0,
    this.STARTING_SPRITE_OFFSET = 0,
+   this.STARTING_RUNNER_TRACK = 1;
+
 
    // States............................................................
 
@@ -138,11 +140,17 @@ var SnailBait = function () {
    this.SNAIL_CELLS_HEIGHT = 34;
    this.SNAIL_CELLS_WIDTH  = 64;
 
+
+    this.flourCells = [
+      { left: 400, top: 540, width: 30, height: 30 },
+      { left: 435, top: 540, width: 30, height: 30 },
+   ];
+
    this.batCells = [
-      { left: 3,   top: 100, width: 36, height: this.BAT_CELLS_HEIGHT },
-      { left: 41,  top: 100, width: 46, height: this.BAT_CELLS_HEIGHT },
-      { left: 93,  top: 100, width: 36, height: this.BAT_CELLS_HEIGHT },
-      { left: 132, top: 100, width: 46, height: this.BAT_CELLS_HEIGHT },
+      { left: 3,   top: 0, width: 36, height: this.BAT_CELLS_HEIGHT },
+      { left: 41,  top: 0, width: 46, height: this.BAT_CELLS_HEIGHT },
+      { left: 93,  top: 0, width: 36, height: this.BAT_CELLS_HEIGHT },
+      { left: 132, top: 0, width: 46, height: this.BAT_CELLS_HEIGHT },
    ];
 
    this.batRedEyeCells = [
@@ -332,6 +340,12 @@ var SnailBait = function () {
    ]; 
 
    // Sprite data.......................................................
+
+
+   this.flourData = [
+      { left: 100, top: this.TRACK_1_BASELINE - 30 },
+      { left: 400, top: this.TRACK_2_BASELINE - 30 },
+   ];
 
    this.batData = [
       { left: 85,  
@@ -607,6 +621,7 @@ var SnailBait = function () {
    this.rubies       = [];
    this.sapphires    = [];
    this.snails       = [];
+   this.flours      = [];
 
    this.sprites = []; // For convenience, contains all of the sprites  
                       // from the preceding arrays
@@ -644,6 +659,7 @@ SnailBait.prototype = {
       this.createRubySprites();
       this.createSapphireSprites();
       this.createSnailSprites();
+      this.createFlourSprites();
 
       this.initializeSprites();
 
@@ -653,6 +669,11 @@ SnailBait.prototype = {
    },
 
    addSpritesToSpriteArray: function () {
+
+      for (var i = 0; i < this.flours.length; ++i) {
+         this.sprites.push(this.flours[i]);
+      }
+
       for (var i=0; i < this.platforms.length; ++i) {
          this.sprites.push(this.platforms[i]);
       }
@@ -713,6 +734,20 @@ SnailBait.prototype = {
       this.positionSprites(this.rubies,    this.rubyData);
       this.positionSprites(this.sapphires, this.sapphireData);
       this.positionSprites(this.snails,    this.snailData);
+      this.positionSprites(this.flours,    this.flourData);
+   },
+
+   createFlourSprites: function() {
+      var flour,
+          flourArtist = new SpriteSheetArtist(this.spritesheet, this.flourCells);
+
+      for (var i = 0; i < this.flourData.length; ++i) {
+         flour = new Sprite('flour', flourArtist);
+         flour.width = 30;
+         flour.height = 30;
+
+         this.flours.push(flour);  // store in an array like bees/bats
+      }
    },
 
    createBatSprites: function () {
