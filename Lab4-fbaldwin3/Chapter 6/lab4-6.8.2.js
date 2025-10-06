@@ -142,9 +142,9 @@ var SnailBait = function () {
 
 
    this.flourCells = [
-      { left: 246, top: 464, width: 30, height: 48 },
-      { left: 299, top: 473, width: 30, height: 48 },
-   ];
+      { left: 237, top: 465, width: 47, height: this.RUNNER_CELLS_HEIGHT },
+      ];
+
 
    this.batCells = [
       { left: 3,   top: 0, width: 36, height: this.BAT_CELLS_HEIGHT },
@@ -344,7 +344,7 @@ var SnailBait = function () {
 
    this.flourData = [
       { left: 10, top: this.TRACK_1_BASELINE - 50},
-      { left: 50, top: this.TRACK_2_BASELINE - 50},
+      { left: 300, top: this.TRACK_2_BASELINE - 50},
    ];
 
    this.batData = [
@@ -1202,7 +1202,7 @@ SnailBait.prototype = {
    },
 
    initializeImages: function () {
-      this.spritesheet.src = 'images/spritesheet.png';
+      this.spritesheet.src = 'images/spritesheet-1.png';
       this.runnerAnimatedGIFElement.src = 'images/snail.gif';
 
       this.spritesheet.onload = function (e) {
