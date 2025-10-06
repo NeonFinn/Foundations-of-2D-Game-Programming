@@ -141,9 +141,9 @@ var SnailBait = function () {
    this.SNAIL_CELLS_WIDTH  = 64;
 
 
-    this.flourCells = [
-      { left: 400, top: 540, width: 30, height: 30 },
-      { left: 435, top: 540, width: 30, height: 30 },
+   this.flourCells = [
+      { left: 246, top: 464, width: 30, height: 48 },
+      { left: 299, top: 473, width: 30, height: 48 },
    ];
 
    this.batCells = [
@@ -343,8 +343,8 @@ var SnailBait = function () {
 
 
    this.flourData = [
-      { left: 100, top: this.TRACK_1_BASELINE - 30 },
-      { left: 400, top: this.TRACK_2_BASELINE - 30 },
+      { left: 10, top: this.TRACK_1_BASELINE - 50},
+      { left: 50, top: this.TRACK_2_BASELINE - 50},
    ];
 
    this.batData = [
@@ -743,8 +743,11 @@ SnailBait.prototype = {
 
       for (var i = 0; i < this.flourData.length; ++i) {
          flour = new Sprite('flour', flourArtist);
-         flour.width = 30;
-         flour.height = 30;
+         flour.width = 50;
+         flour.height = 50;
+
+         flour.visible = true;
+         flour.hOffset = 0;
 
          this.flours.push(flour);  // store in an array like bees/bats
       }
