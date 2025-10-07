@@ -142,7 +142,7 @@ var SnailBait = function () {
 
 
    this.flourCells = [
-      { left: 237, top: 465, width: 47, height: this.RUNNER_CELLS_HEIGHT },
+      { left: 237, top: 463, width: 47, height: this.RUNNER_CELLS_HEIGHT },
       ];
 
 
