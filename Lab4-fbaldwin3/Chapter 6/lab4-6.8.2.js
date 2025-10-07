@@ -1202,7 +1202,7 @@ SnailBait.prototype = {
    },
 
    initializeImages: function () {
-      this.spritesheet.src = 'images/spritesheet-1.png';
+      this.spritesheet.src = 'images/spritesheet-mod.png';
       this.runnerAnimatedGIFElement.src = 'images/snail.gif';
 
       this.spritesheet.onload = function (e) {
