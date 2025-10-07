@@ -116,7 +116,7 @@ var SnailBait = function () {
      // Sprite sheet cells................................................
 
    this.RUNNER_CELLS_WIDTH = 50; // pixels
-   this.RUNNER_CELLS_HEIGHT = 54;
+   this.RUNNER_CELLS_HEIGHT = 45;
 
    this.BAT_CELLS_HEIGHT = 34; // Bat cell width varies; not constant 
 
@@ -246,28 +246,27 @@ var SnailBait = function () {
    ];
 
    this.runnerCellsRight = [
-      { left: 414, top: 385, 
-        width: 47, height: this.RUNNER_CELLS_HEIGHT },
 
-      { left: 362, top: 385, 
+
+      { left: 579, top: 468,
          width: 44, height: this.RUNNER_CELLS_HEIGHT },
 
-      { left: 314, top: 385, 
+      { left: 531, top: 469,
          width: 39, height: this.RUNNER_CELLS_HEIGHT },
 
-      { left: 265, top: 385, 
+      { left: 482, top: 465,
          width: 46, height: this.RUNNER_CELLS_HEIGHT },
 
-      { left: 205, top: 385, 
+      { left: 435, top: 465,
          width: 49, height: this.RUNNER_CELLS_HEIGHT },
 
-      { left: 150, top: 385, 
+      { left: 383, top: 468,
          width: 46, height: this.RUNNER_CELLS_HEIGHT },
 
-      { left: 96,  top: 385, 
+      { left: 333,  top: 469,
          width: 46, height: this.RUNNER_CELLS_HEIGHT },
 
-      { left: 45,  top: 385, 
+      { left: 282,  top: 467,
          width: 35, height: this.RUNNER_CELLS_HEIGHT },
 
       { left: 232,   top:463,
