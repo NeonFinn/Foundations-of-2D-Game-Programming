@@ -116,7 +116,7 @@ var SnailBait = function () {
      // Sprite sheet cells................................................
 
    this.RUNNER_CELLS_WIDTH = 50; // pixels
-   this.RUNNER_CELLS_HEIGHT = 45;
+   this.RUNNER_CELLS_HEIGHT = 50;
 
    this.BAT_CELLS_HEIGHT = 34; // Bat cell width varies; not constant 
 
