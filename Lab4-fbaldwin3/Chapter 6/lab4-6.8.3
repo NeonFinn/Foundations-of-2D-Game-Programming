@@ -1,0 +1,29 @@
+To add a zIndex property to the sprites, you would first need to add a zIndex attribute. Then, you could implement a
+sorting mechanism to sort the sprites based on their zIndex before rendering them. Here's an example of how you might do this:
+
+class Sprite {
+    constructor(image, x, y, zIndex = 0) {
+        this.image = image;
+        this.x = x;
+        this.y = y;
+        this.zIndex = zIndex; // add attribute for zIndex
+    }
+
+    draw(context) { // method to draw the sprite
+        context.drawImage(this.image, this.x, this.y);
+    }
+}
+
+const background = new Sprite(bgImage, 0, 0, 0);
+const enemy = new Sprite(enemyImage, 110, 100, 110);
+const player = new Sprite(playerImage, 100, 100, 100);
+
+const sprites = [player, enemy, background]; // array of sprites
+
+function drawAll(context) {
+    sprites.sort((a, b) => a.zIndex - b.zIndex); // sort sprites by zIndex
+
+    for (const sprite of sprites) { // draw each sprite in order of zIndex
+        sprite.draw(context);
+    }
+}
