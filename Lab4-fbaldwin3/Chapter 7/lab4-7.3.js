@@ -248,10 +248,10 @@ var SnailBait = function () {
    this.runnerCellsRight = [
 
 
-      { left: 579, top: 468,
+      { left: 579, top: 465,
          width: 44, height: this.RUNNER_CELLS_HEIGHT },
 
-      { left: 531, top: 469,
+      { left: 531, top: 465,
          width: 39, height: this.RUNNER_CELLS_HEIGHT },
 
       { left: 482, top: 465,
@@ -260,45 +260,42 @@ var SnailBait = function () {
       { left: 435, top: 465,
          width: 49, height: this.RUNNER_CELLS_HEIGHT },
 
-      { left: 383, top: 468,
+      { left: 383, top: 465,
          width: 46, height: this.RUNNER_CELLS_HEIGHT },
 
-      { left: 333,  top: 469,
+      { left: 333,  top: 465,
          width: 46, height: this.RUNNER_CELLS_HEIGHT },
 
-      { left: 282,  top: 467,
+      { left: 282,  top: 465,
          width: 35, height: this.RUNNER_CELLS_HEIGHT },
 
-      { left: 232,   top:463,
+      { left: 232,   top:465,
          width: 35, height: this.RUNNER_CELLS_HEIGHT }
    ],
 
    this.runnerCellsLeft = [
-      { left: 0,   top: 305, 
+      { left: 232,   top: 522,
          width: 47, height: this.RUNNER_CELLS_HEIGHT },
 
-      { left: 55,  top: 305, 
+      { left: 282,  top: 522,
          width: 44, height: this.RUNNER_CELLS_HEIGHT },
 
-      { left: 107, top: 305, 
+      { left: 333, top: 522,
          width: 39, height: this.RUNNER_CELLS_HEIGHT },
 
-      { left: 152, top: 305, 
+      { left: 383, top: 522,
          width: 46, height: this.RUNNER_CELLS_HEIGHT },
 
-      { left: 208, top: 305, 
+      { left: 435, top: 522,
          width: 49, height: this.RUNNER_CELLS_HEIGHT },
 
-      { left: 265, top: 305, 
+      { left: 482, top: 522,
          width: 46, height: this.RUNNER_CELLS_HEIGHT },
 
-      { left: 320, top: 305, 
-         width: 42, height: this.RUNNER_CELLS_HEIGHT },
-
-      { left: 380, top: 305, 
+      { left: 531, top: 522,
          width: 35, height: this.RUNNER_CELLS_HEIGHT },
 
-      { left: 425, top: 305, 
+      { left: 579, top: 522,
          width: 35, height: this.RUNNER_CELLS_HEIGHT },
    ],
 
@@ -641,27 +638,30 @@ var SnailBait = function () {
 
    // Pacing on platforms...............................................
 
-   this.runBehavior = {
-      lastAdvanceTime: 0,
-      
-      execute: function (sprite, 
-                         now, 
-                         fps, 
-                         context, 
-                         lastAnimationFrameTime) {
-         if (sprite.runAnimationRate === 0) {
-            return;
-         }
-         
-         if (this.lastAdvanceTime === 0) {  // skip first time
-            this.lastAdvanceTime = now;
-         }
-         else if (now - this.lastAdvanceTime > 
-                  1000 / sprite.runAnimationRate) {
-            sprite.artist.advance();
-            this.lastAdvanceTime = now;
-         }
-      }      
+    this.runBehavior = {
+        lastAdvanceTime: 0,
+
+        execute: function (sprite, now, fps, context, lastAnimationFrameTime) {
+
+            // Only run animation if runner is on a platform
+            if (!snailBait.isRunnerOnPlatform()) {
+                sprite.runAnimationRate = 0; // Stop animation
+                return;
+            }
+
+            if (sprite.runAnimationRate === 0) {
+                // Reset animation rate when back on platform
+                sprite.runAnimationRate = snailBait.RUN_ANIMATION_RATE;
+            }
+
+            if (this.lastAdvanceTime === 0) {  // skip first time
+                this.lastAdvanceTime = now;
+            }
+            else if (now - this.lastAdvanceTime > 2000 / sprite.runAnimationRate) {
+                sprite.artist.advance();
+                this.lastAdvanceTime = now;
+            }
+        }
    };
 
    // Pacing on platforms...............................................
@@ -706,21 +706,31 @@ var SnailBait = function () {
    // Snail shoot behavior..............................................
 
    this.snailShootBehavior = { // sprite is the snail
-      execute: function (sprite, now, fps, context, 
-                         lastAnimationFrameTime) {
-         var bomb = sprite.bomb,
-                    MOUTH_OPEN_CELL = 2;
+       lastShotTime: 0, // Track last shot time
 
-         if ( ! snailBait.isSpriteInView(sprite)) {
-            return;
-         }
+       execute: function (sprite, now, fps, context, lastAnimationFrameTime) {
+           var bomb = sprite.bomb,
+               MOUTH_OPEN_CELL = 2;
 
-         if ( ! bomb.visible && 
-              sprite.artist.cellIndex === MOUTH_OPEN_CELL) {
-            bomb.left = sprite.left;
-            bomb.visible = true;
-         }
-      }
+           if (!snailBait.isSpriteInView(sprite)) {
+               return;
+           }
+
+           // check if enough time has passed since last shot
+           if (this.lastShotTime === 0) {
+               this.lastShotTime = now; // Initialize on first call
+           }
+
+           // shoot if mouth is open and bomb is not visible
+           if (!bomb.visible &&
+               sprite.artist.cellIndex === MOUTH_OPEN_CELL &&
+               now - this.lastShotTime >= 2000) { // only shoot every 2 seconds
+
+               bomb.left = sprite.left;
+               bomb.visible = true;
+               this.lastShotTime = now; // Reset the timer
+           }
+       }
    };
 
    // Move the snail bomb...............................................
@@ -762,6 +772,30 @@ SnailBait.prototype = {
 
       this.addSpritesToSpriteArray();
    },
+
+   isRunnerOnPlatform: function() {
+    var runnerBottom = this.runner.top + this.runner.height;
+    var runnerLeft = this.runner.left;
+    var runnerRight = runnerLeft + this.runner.width;
+
+    for (var i = 0; i < this.platforms.length; i++) {
+        var platform = this.platforms[i];
+
+        // adjust position based on spriteOffset
+        var platformLeft = platform.left - this.spriteOffset;
+        var platformRight = platformLeft + platform.width;
+        var platformTop = platform.top;
+
+        // is runner standing on platform?
+        var isVerticallyAligned = Math.abs(runnerBottom - platformTop) <= 37; //random number i messed around with until it worked
+        var isHorizontallyAligned = runnerRight > platformLeft && runnerLeft < platformRight;
+
+        if (isVerticallyAligned && isHorizontallyAligned) {
+            return true;
+        }
+    }
+    return false;
+},
 
    addSpritesToSpriteArray: function () {
       for (var i=0; i < this.platforms.length; ++i) {
@@ -955,7 +989,7 @@ SnailBait.prototype = {
 
    createRunnerSprite: function () {
       var RUNNER_LEFT = 50,
-          RUNNER_HEIGHT = 53,
+          RUNNER_HEIGHT = 47,
           STARTING_RUNNER_TRACK = 1,
           STARTING_RUN_ANIMATION_RATE = 0;
 
