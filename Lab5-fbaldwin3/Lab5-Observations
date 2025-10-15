@@ -3,4 +3,5 @@ and unpause() lines from the jump behavior can cause the player to teleport stra
 regardless of if the game was paused. Sometimes she also falls down at the correct rate, but continues to go past the "ground"
 level before teleporting back up to where shes supposed to be.
 
-2.
+3.The runner does take twice as long to jump when you change the constant. Instead of going up in 500ms and down in 500ms,
+she goes up in 1000ms and down in 1000ms. This is because the constant is used to determine how long the jump takes.

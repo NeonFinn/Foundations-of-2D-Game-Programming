@@ -897,8 +897,8 @@ SnailBait.prototype = {
   
    equipRunnerForJumping: function () {
       var INITIAL_TRACK = 1,
-          RUNNER_JUMP_HEIGHT = 120,
-          RUNNER_JUMP_DURATION = 1000;
+          RUNNER_JUMP_HEIGHT = 300,
+          RUNNER_JUMP_DURATION = 4000;
 
       this.runner.JUMP_HEIGHT   = RUNNER_JUMP_HEIGHT;
       this.runner.JUMP_DURATION = RUNNER_JUMP_DURATION;
