@@ -1,0 +1,6 @@
+1. In the original code, the runner pauses and then resumes right where she was when you pressed the button. Commenting out the pause()
+and unpause() lines from the jump behavior can cause the player to teleport straight down as if the they kept moving down
+regardless of if the game was paused. Sometimes she also falls down at the correct rate, but continues to go past the "ground"
+level before teleporting back up to where shes supposed to be.
+
+2.
