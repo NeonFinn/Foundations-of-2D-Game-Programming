@@ -1,0 +1,3 @@
+1. Adding the new keydown function was not terribly difficult. I did have some troubles with not using SlowMotionEnabled at
+first. But adding that made things work a lot easier. I also tried to put the assignment for true or false inside the if
+statements but that caused issues so I had put them outside it and it worked fine.

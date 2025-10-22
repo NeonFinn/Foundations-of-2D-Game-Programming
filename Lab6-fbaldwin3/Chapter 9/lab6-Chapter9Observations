@@ -1,0 +1,5 @@
+1. When the assignment to this.easingFunction is commented out, it causes the players jump to be strictly linear. Instead
+of a natural looking arc it looks more like a straight line up and down. The easing function adds a more natural curve to the jump.
+
+2. Changing the ease-out-in to ease-in-out makes the jump look almost backwards. The coins seem to rise slower before peaking and
+falling faster. This is not a natural looking jump but it could be used for a character that is very heavy or has a lot of momentum.
