@@ -55,7 +55,7 @@ var Sprite = function (type, artist, behaviors) {
    this.opacity   = DEFAULT_OPACITY;
    this.visible   = true;
 
-   this.showCollisionRectangle = false;
+   this.showCollisionRectangle = true;
 
    this.collisionMargin = {
       left: 0,

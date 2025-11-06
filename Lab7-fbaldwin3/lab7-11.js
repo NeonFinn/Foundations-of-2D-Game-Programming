@@ -101,6 +101,7 @@ var SnailBait = function () {
    // Score.............................................................
 
    this.scoreElement = document.getElementById('score'),
+   this.score = 0,
 
    // Sound and music...................................................
 
@@ -842,16 +843,39 @@ var SnailBait = function () {
    };
 
    this.collideBehavior = {
+      adjustScore: function (sprite) {
+         if (sprite.value) {
+            snailBait.score += sprite.value;
+            snailBait.updateScoreElement();
+         }
+      },
+
+      processAssetCollision: function (sprite) {
+        this.adjustScore(sprite);
+
+        if (sprite.type === 'ruby')
+            snailBait.scoreElement.style.color = 'blue';
+        else if (sprite.type === 'sapphire')
+            snailBait.scoreElement.style.color = 'red';
+        else
+            snailBait.scoreElement.style.color = 'green';
+
+        setTimeout( function (e) {
+            snailBait.scoreElement.style.color = 'yellow';
+        }, 400);
+
+      },
+
       isCandidateForCollision: function (sprite, otherSprite) {
-         var s, o;
-         
-         s = sprite.calculateCollisionRectangle(),
-         o = otherSprite.calculateCollisionRectangle();
-         
-         return o.left < s.right &&
-                sprite !== otherSprite &&
-                sprite.visible && otherSprite.visible &&
-                !sprite.exploding && !otherSprite.exploding;
+        var s, o;
+
+        s = sprite.calculateCollisionRectangle();
+        o = otherSprite.calculateCollisionRectangle();
+
+        return o.left < s.right &&
+               sprite !== otherSprite &&
+               sprite.visible && otherSprite.visible &&
+               !sprite.exploding && !otherSprite.exploding;
       },
 
       didCollide: function (sprite, otherSprite, context) {
@@ -901,12 +925,14 @@ var SnailBait = function () {
                   'snail bomb' === otherSprite.type ||
                   'snail' === otherSprite.type) {
             otherSprite.visible = false;
+            this.processAssetCollision(otherSprite);
          }
 
          if ('bat' === otherSprite.type || 'bee' === otherSprite.type ||
              'snail bomb' === otherSprite.type ||
              'snail' === otherSprite.type) {
             this.processBadGuyCollision(sprite);
+            console.log('Collided with ' + otherSprite.type);
          }
       },
 
@@ -928,6 +954,34 @@ var SnailBait = function () {
 };
 
 SnailBait.prototype = {
+    updateScoreElement: function () {
+        this.scoreElement.innerHTML = this.score;
+    },
+
+    setSpriteValues: function () {
+        var sprite,
+            COIN_VALUE = 100,
+            SAPPHIRE_VALUE = 500,
+            RUBY_VALUE = 1000;
+
+        for (var i=0; i < this.sprites.length; ++i) {
+            sprite = this.sprites[i];
+
+            if (sprite.type === 'coin') {
+                sprite.value = COIN_VALUE;
+                console.log("Setting coin value to " + COIN_VALUE)
+            }
+            if (sprite.type === 'sapphire') {
+                sprite.value = SAPPHIRE_VALUE;
+                console.log("Setting sapphire value to " + SAPPHIRE_VALUE)
+            }
+            if (sprite.type === 'ruby') {
+                sprite.value = RUBY_VALUE;
+                console.log("Setting ruby value to " + RUBY_VALUE)
+            }
+        }
+    },
+
    createSprites: function () {
       this.createPlatformSprites(); 
 
@@ -945,6 +999,7 @@ SnailBait.prototype = {
       // All sprites are also stored in a single array
 
       this.addSpritesToSpriteArray();
+      this.setSpriteValues();
    },
 
    addSpritesToSpriteArray: function () {
@@ -1087,7 +1142,7 @@ SnailBait.prototype = {
          bat.height = this.BAT_CELLS_HEIGHT;
 
          bat.collisionMargin = {
-            left: 6, top: 11, right: 4, bottom: 8,
+            left: 0, top: 11, right: 0, bottom: 8,
          };
 
          this.bats.push(bat);
@@ -1112,7 +1167,7 @@ SnailBait.prototype = {
          bee.height = this.BEE_CELLS_HEIGHT;
 
          bee.collisionMargin = {
-            left: 10, top: 10, right: 5, bottom: 10,
+            left: 10, top: 5, right: 0, bottom: 5,
          };
 
          this.bees.push(bee);
@@ -1187,8 +1242,8 @@ SnailBait.prototype = {
          coin.value = 50;
 
          coin.collisionMargin = {
-            left:   coin.width/8, top:    coin.height/8,
-            right:  coin.width/8, bottom: coin.height/4
+            left:   coin.width/10, top:    coin.height/30,
+            right:  coin.width/30, bottom: coin.height/10
          };
          this.coins.push(coin);
       }
@@ -1250,9 +1305,9 @@ SnailBait.prototype = {
 
          ruby.collisionMargin = {
             left: ruby.width/5,
-            top: ruby.height/8,
-            right: 0,
-            bottom: ruby.height/4
+            top: ruby.height/20,
+            right: ruby.width/20,
+            bottom: ruby.height/20
          };
          
          this.rubies.push(ruby);
@@ -1284,10 +1339,10 @@ SnailBait.prototype = {
        this.runner.height = this.RUNNER_CELLS_HEIGHT;
          
        this.runner.collisionMargin = {
-          left: 20,
-          top: 15, 
-          right: 15,
-          bottom: 20,
+          left: -10,
+          top: -10,
+          right: -10,
+          bottom: -20,
        };
 
        this.sprites.push(this.runner);
@@ -1318,8 +1373,8 @@ SnailBait.prototype = {
          sapphire.value = 100;
 
          sapphire.collisionMargin = {
-            left:   sapphire.width/8, top:    sapphire.height/8,
-            right:  sapphire.width/8, bottom: sapphire.height/4
+            left:   sapphire.width/20, top:    sapphire.height/20,
+            right:  sapphire.width/20, bottom: sapphire.height/20
          }; 
 
          this.sapphires.push(sapphire);

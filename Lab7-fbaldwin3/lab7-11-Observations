@@ -1,0 +1,5 @@
+3. Experimenting with bounding boxes helped me better understand how javascript handles object collisions. Messing with the
+dimensions and positions of the boxes also allows me to decide what kind of interaction I want between objects. For example,
+I might not want the bees wings to trigger a collision with the player, so I can make the bounding box smaller than the actual image.
+Other times you may want a powerup to have a large collision area to make it easier for the player to collect with all that
+is going on in the scene.
