@@ -1,5 +1,15 @@
-3. Experimenting with bounding boxes helped me better understand how javascript handles object collisions. Messing with the
+3 - Experimenting with bounding boxes helped me better understand how JavaScript handles object collisions. Messing with the
 dimensions and positions of the boxes also allows me to decide what kind of interaction I want between objects. For example,
 I might not want the bees wings to trigger a collision with the player, so I can make the bounding box smaller than the actual image.
 Other times you may want a powerup to have a large collision area to make it easier for the player to collect with all that
-is going on in the scene.
+is going on in the scene. I also made the player's bounding box a lot bigger so its easier to test collisions.
+
+3.5 - Adding the console command was really easy, I just had to skim the code breifly to find where the processCollisions function
+was at. Then I put the console command after the if statement that checks for "bad guy" collisions. I did have a small brain
+fart moment where I tried to type "Debug.Log()" because I've had to do that quite a lot in my 3D Game Development class. After
+I realized my mistake and saw it wasn't outputting anything to the console I went back and fixed it.
+
+Adding the score - Following along with the lecture made this part less complex than I expected. I rewatched it a couple times to make
+sure I understood each step. The only parts I ran into trouble were just typos and small syntax errors on my part. I had one line
+with an extra set of && and no semicolon and caused my entire game to fail to load. It took me about an hour to review my code, compare
+to the lecture, and find the issue. Once I fixed that it worked perfectly.
