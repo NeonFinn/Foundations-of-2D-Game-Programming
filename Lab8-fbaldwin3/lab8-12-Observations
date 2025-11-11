@@ -1,0 +1,7 @@
+1. If the initial velocity of the runner is approximately 310 pixels per second and the game is running at 60fps,
+the player is falling approximately 5.17 pixels each frame (310 pixels/60 frames = 5.17 pixels/frame).
+
+2. The vertical velocity when the runner stops falling depends on how far the player falls before landing. When the player is
+first dropped into the game after dying, the velocity is around 350-390 pixels per second. However, if the player simply walks
+off the starter platform, the vertical velocity is 281 pixels per second. Jumping from the highest platform to the lowest
+platform results in a vertical velocity of approximately 460 pixels per second.

@@ -39,7 +39,7 @@ var SnailBait = function () {
    this.BACKGROUND_VELOCITY = 42,
    this.RUN_ANIMATION_RATE = 30,
 
-   this.PLATFORM_HEIGHT = 8,  
+   this.PLATFORM_HEIGHT = 8,
    this.PLATFORM_STROKE_WIDTH = 2,
    this.PLATFORM_STROKE_STYLE = 'rgb(0,0,0)',
 
@@ -1184,6 +1184,7 @@ SnailBait.prototype = {
          this.initialVelocityY = initialVelocity || 0;
          this.fallTimer.start(
             snailBait.timeSystem.calculateGameTime());
+         console.log('Initial vertical velocity: ' + this.initialVelocityY);
       };
 
       this.runner.stopFalling = function () {
