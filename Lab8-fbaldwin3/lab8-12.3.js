@@ -24,7 +24,7 @@ var SnailBait = function () {
 
    // Gravity...........................................................
 
-   this.GRAVITY_FORCE = 9.81; // m/s/s
+   this.GRAVITY_FORCE = 3.0; // m/s/s
 
    // Constants.........................................................
 
@@ -1182,6 +1182,10 @@ SnailBait.prototype = {
          this.falling = true;
          this.velocityY = initialVelocity || 0;
          this.initialVelocityY = initialVelocity || 0;
+
+         snailBait.setTimeRate(0.5);
+         console.log("Runner is falling, slow motion on");
+
          this.fallTimer.start(
             snailBait.timeSystem.calculateGameTime());
       };
@@ -1189,6 +1193,10 @@ SnailBait.prototype = {
       this.runner.stopFalling = function () {
          this.falling = false;
          this.velocityY = 0;
+
+         snailBait.setTimeRate(1.0);
+            console.log("Runner stopped falling, normal time");
+
          this.fallTimer.stop(
             snailBait.timeSystem.calculateGameTime());
       };
