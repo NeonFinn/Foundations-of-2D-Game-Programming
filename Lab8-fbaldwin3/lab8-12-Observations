@@ -1,7 +1,13 @@
 1. If the initial velocity of the runner is approximately 310 pixels per second and the game is running at 60fps,
-the player is falling approximately 5.17 pixels each frame (310 pixels/60 frames = 5.17 pixels/frame).
+the player is falling approximately 5.17 pixels each frame. My computer seems to maintain around 167fps with an initial
+velocity of 303 pixels per second, so that would mean my player is falling around 1.81 pixels each frame.
 
 2. The vertical velocity when the runner stops falling depends on how far the player falls before landing. When the player is
 first dropped into the game after dying, the velocity is around 350-390 pixels per second. However, if the player simply walks
 off the starter platform, the vertical velocity is 281 pixels per second. Jumping from the highest platform to the lowest
 platform results in a vertical velocity of approximately 460 pixels per second.
+
+3. Changing the gravity was as simple as modifying the constant. Implimenting the slow down timer was also easy, in the
+equipRunnerForFalling function I just added a setTimeRate call to excecute when the player is falling from a platform.
+In the stopFalling function I just had to set the time rate back to normal. Calling these right before the fall timer, and
+after the variables were reset seemes to work well.
